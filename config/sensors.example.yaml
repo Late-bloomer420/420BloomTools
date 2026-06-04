@@ -1,0 +1,62 @@
+# bloom-iot sensor configuration
+# Copy to config/sensors.yaml and edit for your setup.
+# config/sensors.yaml is gitignored to keep credentials out of version control.
+
+broker:
+  host: localhost       # MQTT broker IP or hostname
+  port: 1883
+  keepalive: 60
+  mqtt_version: "3.1.1" # or "5.0"
+  # username: myuser    # uncomment if your broker requires authentication
+  # password: mypassword
+
+output:
+  mode: dashboard       # dashboard | json | both
+  # json_path: data/readings.json   # required when mode is json or both
+
+refresh_rate: 2.0       # dashboard redraw interval in seconds
+
+sensors:
+  - name: grow_tent_temperature
+    sensor_type: temperature
+    mqtt_topic: garden/tent1/temperature
+    unit: celsius
+    min_valid: -10.0
+    max_valid: 60.0
+    thresholds:
+      warn_low: 18.0
+      warn_high: 28.0
+      crit_low: 10.0
+      crit_high: 35.0
+
+  - name: grow_tent_humidity
+    sensor_type: humidity
+    mqtt_topic: garden/tent1/humidity
+    unit: percent
+    min_valid: 0.0
+    max_valid: 100.0
+    thresholds:
+      warn_low: 50.0
+      warn_high: 80.0
+      crit_low: 30.0
+      crit_high: 90.0
+
+  - name: soil_moisture_tray1
+    sensor_type: soil_moisture
+    mqtt_topic: garden/tray1/soil_moisture
+    unit: percent
+    min_valid: 0.0
+    max_valid: 100.0
+    thresholds:
+      warn_low: 30.0
+      crit_low: 15.0
+
+  - name: grow_light_intensity
+    sensor_type: light
+    mqtt_topic: garden/tent1/light
+    unit: lux
+    min_valid: 0.0
+    max_valid: 100000.0
+    thresholds:
+      warn_low: 2000.0
+      warn_high: 50000.0
